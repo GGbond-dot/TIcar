@@ -1,0 +1,11 @@
+ctrboard-h7_all\quaternionekf.o: ..\Algorithm\QuaternionEKF.c
+ctrboard-h7_all\quaternionekf.o: ../Algorithm/inc/QuaternionEKF.h
+ctrboard-h7_all\quaternionekf.o: ../Algorithm/inc/kalman_filter.h
+ctrboard-h7_all\quaternionekf.o: ../Algorithm/inc/../../Drivers/CMSIS/DSP/Include/arm_math.h
+ctrboard-h7_all\quaternionekf.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
+ctrboard-h7_all\quaternionekf.o: D:\keil5_32\ARM\ARMCC\Bin\..\include\stdint.h
+ctrboard-h7_all\quaternionekf.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
+ctrboard-h7_all\quaternionekf.o: D:\keil5_32\ARM\ARMCC\Bin\..\include\string.h
+ctrboard-h7_all\quaternionekf.o: D:\keil5_32\ARM\ARMCC\Bin\..\include\math.h
+ctrboard-h7_all\quaternionekf.o: D:\keil5_32\ARM\ARMCC\Bin\..\include\float.h
+ctrboard-h7_all\quaternionekf.o: D:\keil5_32\ARM\ARMCC\Bin\..\include\stdlib.h
