@@ -110,6 +110,8 @@ float dbg_pitch_speed_rpm = 0.0f;
 float dbg_imu_pitch_deg = 0.0f;
 float dbg_motor_pitch_deg = 0.0f;
 float dbg_yaw_speed_rpm = 0.0f;
+float dbg_yaw_error = 0.0f;
+float dbg_yaw_ff_rpm = 0.0f;
 
 typedef struct
 {
@@ -161,12 +163,14 @@ static pid_ctrl_t pid_pitch_speed = {
     .out_limit = GIMBAL_SAFE_MAX_SPEED_RPM, .integral_limit = NAN};
 
 static float g_yaw_kp = 2.8f;
-static float g_yaw_ki = 0.02f;
+static float g_yaw_ki = 0.05f;
 static float g_yaw_kd = 0.10f;
-static float g_yaw_integral_limit = 300.0f;
-static float g_yaw_ff_gain = 1.5f;
+static float g_yaw_integral_limit = 600.0f;
+static float g_yaw_ff_gain = 7.0f;
 static float g_yaw_ff_sign = -1.0f;
 static float g_yaw_deg_s_to_rpm = (1.0f / 6.0f);
+static float g_yaw_integral_decay = 0.90f;
+static float g_yaw_integral_decay_threshold = 1.0f;
 
 static float g_pitch_kp = 2.8f;
 static float g_pitch_ki = 0.02f;
@@ -537,6 +541,13 @@ static void gimbal_step_imu_execute(void)
     // 关键：处理过零点 (例如目标是1度，当前是359度，误差应为+2度，而不是-358度)
     if (yaw_world_error > 180.0f) yaw_world_error -= 360.0f;
     if (yaw_world_error < -180.0f) yaw_world_error += 360.0f;
+    dbg_yaw_error = yaw_world_error;
+
+    if ((yaw_world_error > 0.0f && pid_yaw_speed.prev < 0.0f) ||
+        (yaw_world_error < 0.0f && pid_yaw_speed.prev > 0.0f))
+    {
+        pid_yaw_speed.integral = 0.0f;
+    }
 
     pid_yaw_speed.kp = g_yaw_kp;
     pid_yaw_speed.ki = g_yaw_ki;
@@ -547,6 +558,12 @@ static void gimbal_step_imu_execute(void)
     float yaw_gyro_deg_s = gyro[2] * (180.0f / (float)M_PI);
     float yaw_ff_rpm = g_yaw_ff_sign * yaw_gyro_deg_s * g_yaw_deg_s_to_rpm * g_yaw_ff_gain;
     yaw_speed_rpm += yaw_ff_rpm;
+    dbg_yaw_ff_rpm = yaw_ff_rpm;
+
+    if (fabsf(yaw_world_error) < g_yaw_integral_decay_threshold)
+    {
+        pid_yaw_speed.integral *= g_yaw_integral_decay;
+    }
 
     if (!isnan(pid_yaw_speed.out_limit))
     {

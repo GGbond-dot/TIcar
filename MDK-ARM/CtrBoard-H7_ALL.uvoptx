@@ -185,6 +185,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>dbg_yaw_speed_rpm</ItemText>
         </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>dbg_yaw_error</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>dbg_yaw_ff_rpm</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

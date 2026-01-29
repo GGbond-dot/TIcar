@@ -28,25 +28,25 @@ Project File Date:  01/28/2026
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\keil5_32\ARM\ARMCC\Bin'
 Build target 'CtrBoard-H7_ALL'
 compiling gimbal_task.c...
-..\App\gimbal_task.c(224): warning:  #177-D: variable "imu_print_div"  was declared but never referenced
+..\App\gimbal_task.c(228): warning:  #177-D: variable "imu_print_div"  was declared but never referenced
   	uint32_t imu_print_div = 0;
-..\App\gimbal_task.c(461): warning:  #185-D: dynamic initialization in unreachable code
+..\App\gimbal_task.c(465): warning:  #185-D: dynamic initialization in unreachable code
       int32_t raw_yaw = vision_values[0];
-..\App\gimbal_task.c(512): warning:  #177-D: variable "motor_yaw_current"  was declared but never referenced
+..\App\gimbal_task.c(516): warning:  #177-D: variable "motor_yaw_current"  was declared but never referenced
       float motor_yaw_current = g_axis_table[GIMBAL_AXIS_YAW].current_angle_deg;
-..\App\gimbal_task.c(355): warning:  #177-D: function "gimbal_le32_to_i32"  was declared but never referenced
+..\App\gimbal_task.c(359): warning:  #177-D: function "gimbal_le32_to_i32"  was declared but never referenced
   static int32_t gimbal_le32_to_i32(const uint8_t *data)
-..\App\gimbal_task.c(186): warning:  #550-D: variable "world_target_initialized"  was set but never used
+..\App\gimbal_task.c(190): warning:  #550-D: variable "world_target_initialized"  was set but never used
   static bool world_target_initialized = false; // 目标角度是否已初始化
-..\App\gimbal_task.c(196): warning:  #550-D: variable "chassis_turning_mode"  was set but never used
+..\App\gimbal_task.c(200): warning:  #550-D: variable "chassis_turning_mode"  was set but never used
   static bool chassis_turning_mode = false;   // 底盘是否处于转弯状态，转弯时强制使用IMU增稳
-..\App\gimbal_task.c(432): warning:  #177-D: function "yaw_deg_from_motor"  was declared but never referenced
+..\App\gimbal_task.c(436): warning:  #177-D: function "yaw_deg_from_motor"  was declared but never referenced
   static float yaw_deg_from_motor(void)
-..\App\gimbal_task.c(454): warning:  #177-D: variable "debug_cnt"  was declared but never referenced
+..\App\gimbal_task.c(458): warning:  #177-D: variable "debug_cnt"  was declared but never referenced
   static uint32_t debug_cnt = 0;
 ..\App\gimbal_task.c: 8 warnings, 0 errors
 linking...
-Program Size: Code=91104 RO-data=18844 RW-data=892 ZI-data=38324  
+Program Size: Code=91440 RO-data=18844 RW-data=908 ZI-data=38332  
 FromELF: creating hex file...
 "CtrBoard-H7_ALL\CtrBoard-H7_ALL.axf" - 0 Error(s), 8 Warning(s).
 

@@ -13,10 +13,13 @@
 #define MAX_OUT     500
 
 #define IMU_TASK_PERIOD_TICKS  (1U)   //1是1kHz 2是500Hz
+#define GYRO_BIAS_SAMPLE_COUNT (500U)
+#define GYRO_BIAS_SAMPLE_DELAY_MS (2U)
 
 float gyro[3] = {0.0f};
 float acc[3] = {0.0f};
 static float temp = 0.0f;
+static float gyro_bias[3] = {0.0f};
 
 float imuQuat[4] = {0.0f};
 float imuAngle[3] = {0.0f};
@@ -65,11 +68,28 @@ void ImuTask_Entry(void const * argument)
     }
     
     AHRS_init(imuQuat);
+    {
+        float gyro_sum[3] = {0.0f};
+        for (uint32_t i = 0; i < GYRO_BIAS_SAMPLE_COUNT; ++i)
+        {
+            BMI088_read(gyro, acc, &temp);
+            gyro_sum[0] += gyro[0];
+            gyro_sum[1] += gyro[1];
+            gyro_sum[2] += gyro[2];
+            osDelay(GYRO_BIAS_SAMPLE_DELAY_MS);
+        }
+        gyro_bias[0] = gyro_sum[0] / (float)GYRO_BIAS_SAMPLE_COUNT;
+        gyro_bias[1] = gyro_sum[1] / (float)GYRO_BIAS_SAMPLE_COUNT;
+        gyro_bias[2] = gyro_sum[2] / (float)GYRO_BIAS_SAMPLE_COUNT;
+    }
     TickType_t last_wake = xTaskGetTickCount();
     /* Infinite loop */
     for(;;)
     {
         BMI088_read(gyro, acc, &temp);
+        gyro[0] -= gyro_bias[0];
+        gyro[1] -= gyro_bias[1];
+        gyro[2] -= gyro_bias[2];
         
         AHRS_update(imuQuat, gyro, acc);
         GetAngle(imuQuat, imuAngle + INS_YAW_ADDRESS_OFFSET, imuAngle + INS_PITCH_ADDRESS_OFFSET, imuAngle + INS_ROLL_ADDRESS_OFFSET);
@@ -86,4 +106,3 @@ void ImuTask_Entry(void const * argument)
     }
     /* USER CODE END ImuTask_Entry */
 }
-
